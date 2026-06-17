@@ -37,13 +37,9 @@ telegram_app = None
 
 def ask_gemini(prompt):
     try:
-        models = genai.list_models()
-
-        output = []
-        for m in models:
-            output.append(m.name)
-
-        return "\n".join(output[:20])
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        return response.text
 
     except Exception as e:
         return f"Error: {e}"
