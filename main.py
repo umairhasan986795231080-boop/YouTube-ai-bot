@@ -1,6 +1,5 @@
 import os
-import asyncio
-import threading
+import google.generativeai as genai
 
 from fastapi import FastAPI
 from telegram import Update
@@ -10,8 +9,6 @@ from telegram.ext import (
     ContextTypes,
 )
 
-import google.generativeai as genai
-
 # --------------------
 # FastAPI
 # --------------------
@@ -19,7 +16,7 @@ import google.generativeai as genai
 app = FastAPI()
 
 @app.get("/")
-def home():
+async def home():
     return {"status": "YT Incognite AI Bot Running"}
 
 # --------------------
@@ -31,6 +28,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
+
+telegram_app = None
 
 # --------------------
 # Gemini Helper
@@ -45,7 +44,7 @@ def ask_gemini(prompt):
         return f"Error: {e}"
 
 # --------------------
-# Telegram Commands
+# Commands
 # --------------------
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -105,36 +104,14 @@ async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     result = ask_gemini(
         f"""
-        Write a YouTube script on:
-        {topic}
+Write a YouTube script on:
+{topic}
 
-        Make it engaging and viral.
-        """
+Make it engaging and viral.
+"""
     )
 
     await update.message.reply_text(result[:4000])
-
-# --------------------
-# Telegram Runner
-# --------------------
-
-def run_bot():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    if not BOT_TOKEN:
-        print("No TELEGRAM_BOT_TOKEN found")
-        return
-
-    application = Application.builder().token(BOT_TOKEN).build()
-
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("viral", viral))
-    application.add_handler(CommandHandler("title", title))
-    application.add_handler(CommandHandler("hashtags", hashtags))
-    application.add_handler(CommandHandler("script", script))
-
-    application.run_polling(stop_signals=None)
 
 # --------------------
 # Startup
@@ -142,7 +119,37 @@ def run_bot():
 
 @app.on_event("startup")
 async def startup():
-    threading.Thread(
-        target=run_bot,
-        daemon=True
-    ).start()
+
+    global telegram_app
+
+    if not BOT_TOKEN:
+        print("ERROR: TELEGRAM_BOT_TOKEN missing")
+        return
+
+    telegram_app = Application.builder().token(BOT_TOKEN).build()
+
+    telegram_app.add_handler(CommandHandler("start", start))
+    telegram_app.add_handler(CommandHandler("viral", viral))
+    telegram_app.add_handler(CommandHandler("title", title))
+    telegram_app.add_handler(CommandHandler("hashtags", hashtags))
+    telegram_app.add_handler(CommandHandler("script", script))
+
+    await telegram_app.initialize()
+    await telegram_app.start()
+    await telegram_app.updater.start_polling()
+
+    print("✅ Telegram Bot Started")
+
+# --------------------
+# Shutdown
+# --------------------
+
+@app.on_event("shutdown")
+async def shutdown():
+
+    global telegram_app
+
+    if telegram_app:
+        await telegram_app.updater.stop()
+        await telegram_app.stop()
+        await telegram_app.shutdown()
