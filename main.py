@@ -59,12 +59,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def viral(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    prompt = """
-    Give me 10 viral YouTube video ideas
-    for 2025.
-    """
-
-    result = ask_gemini(prompt)
+    result = ask_gemini(
+        "Give me 10 viral YouTube video ideas for 2025."
+    )
     await update.message.reply_text(result[:4000])
 
 async def title(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -76,12 +73,10 @@ async def title(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    prompt = f"""
-    Create 10 viral YouTube titles about:
-    {topic}
-    """
+    result = ask_gemini(
+        f"Create 10 viral YouTube titles about: {topic}"
+    )
 
-    result = ask_gemini(prompt)
     await update.message.reply_text(result[:4000])
 
 async def hashtags(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -93,12 +88,10 @@ async def hashtags(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    prompt = f"""
-    Generate 30 viral hashtags for:
-    {topic}
-    """
+    result = ask_gemini(
+        f"Generate 30 viral hashtags for: {topic}"
+    )
 
-    result = ask_gemini(prompt)
     await update.message.reply_text(result[:4000])
 
 async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -110,14 +103,15 @@ async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    prompt = f"""
-    Write a YouTube script on:
-    {topic}
+    result = ask_gemini(
+        f"""
+        Write a YouTube script on:
+        {topic}
 
-    Make it engaging and viral.
-    """
+        Make it engaging and viral.
+        """
+    )
 
-    result = ask_gemini(prompt)
     await update.message.reply_text(result[:4000])
 
 # --------------------
@@ -140,7 +134,7 @@ def run_bot():
     application.add_handler(CommandHandler("hashtags", hashtags))
     application.add_handler(CommandHandler("script", script))
 
-    application.run_polling()
+    application.run_polling(stop_signals=None)
 
 # --------------------
 # Startup
