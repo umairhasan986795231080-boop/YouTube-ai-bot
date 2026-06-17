@@ -103,12 +103,7 @@ async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     result = ask_gemini(
-        f"""
-Write a YouTube script on:
-{topic}
-
-Make it engaging and viral.
-"""
+        f"Write a YouTube script on: {topic}. Make it engaging and viral."
     )
 
     await update.message.reply_text(result[:4000])
@@ -136,7 +131,11 @@ async def startup():
 
     await telegram_app.initialize()
     await telegram_app.start()
-    await telegram_app.updater.start_polling()
+
+    if telegram_app.updater:
+        await telegram_app.updater.start_polling(
+            drop_pending_updates=True
+        )
 
     print("✅ Telegram Bot Started")
 
@@ -150,6 +149,9 @@ async def shutdown():
     global telegram_app
 
     if telegram_app:
-        await telegram_app.updater.stop()
+
+        if telegram_app.updater:
+            await telegram_app.updater.stop()
+
         await telegram_app.stop()
         await telegram_app.shutdown()
