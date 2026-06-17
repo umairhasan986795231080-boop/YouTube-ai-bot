@@ -36,7 +36,17 @@ telegram_app = None
 # --------------------
 
 def ask_gemini(prompt):
-    return "✅ BOT WORKING SUCCESSFULLY"
+    try:
+        models = genai.list_models()
+
+        output = []
+        for m in models:
+            output.append(m.name)
+
+        return "\n".join(output[:20])
+
+    except Exception as e:
+        return f"Error: {e}"
 
 # --------------------
 # Commands
