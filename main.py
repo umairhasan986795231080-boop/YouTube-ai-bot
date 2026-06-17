@@ -1,3 +1,10 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def home():
+    return {"status": "YT Incognite AI Bot Running"}
 def run_bot():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
