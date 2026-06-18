@@ -173,7 +173,7 @@ async def startup():
     telegram_app.add_handler(CommandHandler("hashtags", hashtags))
     telegram_app.add_handler(CommandHandler("script", script))
     telegram_app.add_handler(CommandHandler("shorts", shorts))
-
+telegram_app.add_handler(CommandHandler("thumbnail", thumbnail))
     await telegram_app.initialize()
     await telegram_app.start()
 
