@@ -66,7 +66,6 @@ def ask_ai(prompt):
 # Commands
 # --------------------
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🚀 YT Incognite AI Bot Active\n\n"
         "Commands:\n"
@@ -182,12 +181,19 @@ async def startup():
     telegram_app = Application.builder().token(BOT_TOKEN).build()
 
     telegram_app.add_handler(CommandHandler("start", start))
-telegram_app.add_handler(CommandHandler("viral", viral))
-telegram_app.add_handler(CommandHandler("title", title))
-telegram_app.add_handler(CommandHandler("hashtags", hashtags))
-telegram_app.add_handler(CommandHandler("script", script))
-telegram_app.add_handler(CommandHandler("shorts", shorts))
-telegram_app.add_handler(CommandHandler("thumbnail", thumbnail))
+    
+    telegram_app.add_handler(CommandHandler("viral", viral))
+    
+    telegram_app.add_handler(CommandHandler("title", title))
+    
+    telegram_app.add_handler(CommandHandler("hashtags", hashtags))
+    
+    telegram_app.add_handler(CommandHandler("script", script))
+    
+    telegram_app.add_handler(CommandHandler("shorts", shorts))
+    
+    telegram_app.add_handler(CommandHandler("thumbnail", thumbnail))
+    
     await telegram_app.initialize()
     await telegram_app.start()
 
