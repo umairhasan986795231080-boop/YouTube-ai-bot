@@ -76,7 +76,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/script topic\n"
         "/shorts topic"
         "/thumbnail topic"
-    )async def thumbnail(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    )
+    async def thumbnail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = " ".join(context.args)
 
     if not topic:
@@ -127,21 +128,15 @@ async def hashtags(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not topic:
         await update.message.reply_text(
             "Example:\n/hashtags AI"
-        )
-        return
+              )
 
-    result = ask_ai(
-        f"Generate 30 viral hashtags for: {topic}"
-    )
 
-    await update.message.reply_text(result[:4000])
-
-async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def thumbnail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = " ".join(context.args)
 
     if not topic:
         await update.message.reply_text(
-            "Example:\n/script AI Agents"
+            "Example:\n/thumbnail AI Agents"
         )
         return
 
