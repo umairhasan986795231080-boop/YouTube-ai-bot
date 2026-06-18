@@ -66,6 +66,7 @@ def ask_ai(prompt):
 # Commands
 # --------------------
 
+    async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🚀 YT Incognite AI Bot Active\n\n"
         "Commands:\n"
@@ -163,7 +164,7 @@ For each idea provide:
 
     await update.message.reply_text(result[:4000])
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
 
 # --------------------
 # Startup
