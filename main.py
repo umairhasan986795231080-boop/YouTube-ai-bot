@@ -79,7 +79,7 @@ def ask_ai(prompt):
     )
 
 
-async def viral(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context: Context
     result = ask_ai("Give me 10 viral YouTube video ideas.")
     await update.message.reply_text(result[:4000])
 
