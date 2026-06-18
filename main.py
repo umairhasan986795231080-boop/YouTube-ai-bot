@@ -75,6 +75,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/hashtags topic\n"
         "/script topic\n"
         "/shorts topic"
+        "/thumbnail topic"
     )async def thumbnail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = " ".join(context.args)
 
