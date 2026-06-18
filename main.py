@@ -80,26 +80,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async def thumbnail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = " ".join(context.args)
 
-    if not topic:
-        await update.message.reply_text(
-            "Example:\n/thumbnail AI Agents"
-        )
-        return
-
-    result = ask_ai(
-        f"""
-Create 5 viral YouTube thumbnail ideas for: {topic}
-
-For each idea provide:
-1. Thumbnail Text
-2. Visual Concept
-3. Emotion
-4. Color Scheme
-"""
+    async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "🚀 YT Incognite AI Bot Active\n\n"
+        "Commands:\n"
+        "/viral\n"
+        "/title topic\n"
+        "/hashtags topic\n"
+        "/script topic\n"
+        "/shorts topic\n"
+        "/thumbnail topic"
     )
-
-    await update.message.reply_text(result[:4000])
-    
 
 async def viral(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = ask_ai(
