@@ -73,7 +73,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/viral\n"
         "/title topic\n"
         "/hashtags topic\n"
-        "/script topic"
+        "/script topic\n"
+        "/shorts topic"
     )
 
 async def viral(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -127,6 +128,30 @@ async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(result[:4000])
 
+async def shorts(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    topic = " ".join(context.args)
+
+    if not topic:
+        await update.message.reply_text(
+            "Example:\n/shorts AI Agents"
+        )
+        return
+
+    result = ask_ai(
+        f"""
+Create a viral YouTube Shorts script about: {topic}
+
+Format:
+HOOK:
+MAIN CONTENT:
+CTA:
+
+Keep it under 60 seconds.
+"""
+    )
+
+    await update.message.reply_text(result[:4000])
+
 # --------------------
 # Startup
 # --------------------
@@ -147,6 +172,7 @@ async def startup():
     telegram_app.add_handler(CommandHandler("title", title))
     telegram_app.add_handler(CommandHandler("hashtags", hashtags))
     telegram_app.add_handler(CommandHandler("script", script))
+    telegram_app.add_handler(CommandHandler("shorts", shorts))
 
     await telegram_app.initialize()
     await telegram_app.start()
