@@ -41,7 +41,7 @@ def ask_ai(prompt):
                 "Content-Type": "application/json",
             },
             json={
-                "model": "mistralai/mistral-7b-instruct",
+                "model": "openai/gpt-oss-20b:free",
                 "messages": [
                     {
                         "role": "user",
