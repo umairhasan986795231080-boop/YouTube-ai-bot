@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+import requests
 
 from fastapi import FastAPI
 from telegram import Update
@@ -24,22 +24,40 @@ async def home():
 # --------------------
 
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 telegram_app = None
 
 # --------------------
-# Gemini Helper
+# OpenRouter Helper
 # --------------------
 
-def ask_gemini(prompt):
+def ask_ai(prompt):
     try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompt)
-        return response.text
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "mistralai/mistral-7b-instruct",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            },
+            timeout=60
+        )
+
+        data = response.json()
+
+        if "choices" not in data:
+            return f"OpenRouter Error:\n{data}"
+
+        return data["choices"][0]["message"]["content"]
 
     except Exception as e:
         return f"Error: {e}"
@@ -59,8 +77,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def viral(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    result = ask_gemini(
-        "Give me 10 viral YouTube video ideas for 2025."
+    result = ask_ai(
+        "Give me 10 viral YouTube video ideas."
     )
     await update.message.reply_text(result[:4000])
 
@@ -73,7 +91,7 @@ async def title(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    result = ask_gemini(
+    result = ask_ai(
         f"Create 10 viral YouTube titles about: {topic}"
     )
 
@@ -88,7 +106,7 @@ async def hashtags(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    result = ask_gemini(
+    result = ask_ai(
         f"Generate 30 viral hashtags for: {topic}"
     )
 
@@ -103,7 +121,7 @@ async def script(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    result = ask_gemini(
+    result = ask_ai(
         f"Write a YouTube script on: {topic}. Make it engaging and viral."
     )
 
