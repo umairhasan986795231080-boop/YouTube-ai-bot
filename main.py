@@ -110,6 +110,29 @@ def documentary_prompt(topic):
     return f"""
     def create_video(topic, mp3_file):
 
+Create a Hindi cinematic documentary.
+
+Topic:
+{topic}
+
+Rules:
+- Hindi language only
+- Exactly 100 to 110 words
+- Duration 50 to 55 seconds
+- Strong hook in first sentence
+- Emotional storytelling
+- Suspense
+- Historical documentary style
+- Conflict
+- Twist
+- Cliffhanger ending
+
+IMPORTANT:
+Do not exceed 110 words.
+
+Return narration only.
+"""
+    
     images = sorted(
         glob.glob(f"images/{topic}_*.jpg")
     )
@@ -155,28 +178,6 @@ def documentary_prompt(topic):
         pass
 
     return output_video
-Create a Hindi cinematic documentary.
-
-Topic:
-{topic}
-
-Rules:
-- Hindi language only
-- Exactly 100 to 110 words
-- Duration 50 to 55 seconds
-- Strong hook in first sentence
-- Emotional storytelling
-- Suspense
-- Historical documentary style
-- Conflict
-- Twist
-- Cliffhanger ending
-
-IMPORTANT:
-Do not exceed 110 words.
-
-Return narration only.
-"""
 # -------------------------
 # Start
 # -------------------------
