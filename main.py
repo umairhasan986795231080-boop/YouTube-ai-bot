@@ -797,23 +797,68 @@ async def generatemp4(update, context):
 
     topic = " ".join(context.args) or "History"
 
-    await update.message.reply_text("🎬 MP4 builder coming in Phase23B.")
+    await update.message.reply_text(
+        f"🎬 Building video package for: {topic}"
+    )
 
     try:
-        script = ask_ai(f"Write a short Hindi narration about {topic}. Return narration only.")
-        mp3_file = f"{topic}_video.mp3"
+
+        script = ask_ai(documentary_prompt(topic))
+
+        mp3_file = f"{topic}_voice.mp3"
 
         await generate_edge_voice(
-    script,
-    mp3_file
+            script,
+            mp3_file
+        )
+
+        image_prompts = ask_ai(f"""
+Create 10 cinematic image prompts.
+
+Topic:
+{topic}
+
+Rules:
+- Ultra realistic
+- Cinematic lighting
+- Historical documentary style
+- Vertical 9:16 composition
+- Detailed scene descriptions
+
+Return numbered prompts only.
+""")
+
+        await update.message.reply_text(
+            "🖼 Scene Prompts Generated"
+        )
+
+        await send_long_message(
+            update,
+            image_prompts
         )
 
         with open(mp3_file, "rb") as audio:
+
             await update.message.reply_audio(
                 audio=audio,
                 filename=mp3_file,
-                caption=f"🎤 Narration for {topic}"
+                caption=f"🎤 Documentary Narration - {topic}"
             )
+
+        try:
+            os.remove(mp3_file)
+        except:
+            pass
+
+        await update.message.reply_text(
+            "✅ Video Package Ready"
+        )
+
+    except Exception as e:
+
+        await update.message.reply_text(
+            f"❌ Error:\n{e}"
+    )
 
         try:
             os.remove(mp3_file)
