@@ -108,7 +108,6 @@ async def generate_edge_voice(text, output_file):
 def documentary_prompt(topic):
 
     return f"""
-    def create_video(topic, mp3_file):
 
 Create a Hindi cinematic documentary.
 
@@ -130,15 +129,16 @@ Rules:
 IMPORTANT:
 Do not exceed 110 words.
 
-Return narration only.
-"""
-    
-    images = sorted(
-        glob.glob(f"images/{topic}_*.jpg")
-    )
+Return narration only."""
 
-    if not images:
-        raise Exception("No images found")
+    def create_video(topic, mp3_file):
+        
+    images = sorted(
+    glob.glob(f"images/{topic}_*.jpg")
+)
+
+if not images:
+    raise Exception("No images found")
 
     list_file = f"{topic}_images.txt"
 
@@ -178,6 +178,7 @@ Return narration only.
         pass
 
     return output_video
+    
 # -------------------------
 # Start
 # -------------------------
