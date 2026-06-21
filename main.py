@@ -108,6 +108,53 @@ async def generate_edge_voice(text, output_file):
 def documentary_prompt(topic):
 
     return f"""
+    def create_video(topic, mp3_file):
+
+    images = sorted(
+        glob.glob(f"images/{topic}_*.jpg")
+    )
+
+    if not images:
+        raise Exception("No images found")
+
+    list_file = f"{topic}_images.txt"
+
+    with open(list_file, "w") as f:
+
+        for image in images:
+            f.write(f"file '{os.path.abspath(image)}'\n")
+            f.write("duration 3\n")
+
+        f.write(f"file '{os.path.abspath(images[-1])}'\n")
+
+    output_video = f"{topic}.mp4"
+
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-f", "concat",
+        "-safe", "0",
+        "-i", list_file,
+        "-i", mp3_file,
+        "-vf",
+        "scale=720:1280,format=yuv420p",
+        "-shortest",
+        "-c:v", "libx264",
+        "-c:a", "aac",
+        output_video
+    ]
+
+    subprocess.run(
+        cmd,
+        check=True
+    )
+
+    try:
+        os.remove(list_file)
+    except:
+        pass
+
+    return output_video
 Create a Hindi cinematic documentary.
 
 Topic:
