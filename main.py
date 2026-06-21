@@ -877,4 +877,12 @@ async def startup():
 # Shutdown
 # -------------------------
 
-@app.on_event("shut
+@app.on_event("shutdown")
+async def shutdown():
+    global telegram_app
+
+    if telegram_app:
+        await telegram_app.stop()
+        await telegram_app.shutdown()
+
+    print("🛑 Telegram Bot Stopped")
