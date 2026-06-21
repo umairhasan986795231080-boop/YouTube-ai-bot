@@ -760,7 +760,22 @@ Write a cinematic Hindi narration script about:
 
 {topic}
 
-Keep it under 250 words.
+Create a Hindi cinematic documentary narration.
+
+Topic:
+{topic}
+
+Rules:
+- Hindi only
+- 120 to 140 words
+- 50 to 55 seconds duration
+- Strong shocking hook
+- Emotional storytelling
+- Historical documentary style
+- Suspense
+- Cliffhanger ending
+
+Return narration only.
 Return narration only.
 """
         )
