@@ -114,7 +114,7 @@ Topic:
 
 Rules:
 - Hindi language only
-- 120 to 150 words
+- Exactly 100 to 110 words
 - Duration 50 to 55 seconds
 - Strong hook in first sentence
 - Emotional storytelling
@@ -124,9 +124,11 @@ Rules:
 - Twist
 - Cliffhanger ending
 
+IMPORTANT:
+Do not exceed 110 words.
+
 Return narration only.
 """
-
 # -------------------------
 # Start
 # -------------------------
@@ -767,7 +769,9 @@ Topic:
 
 Rules:
 - Hindi only
-- 120 to 140 words
+- Exactly 100 to 110 words
+IMPORTANT:
+Do not exceed 110 words.
 - 50 to 55 seconds duration
 - Strong shocking hook
 - Emotional storytelling
@@ -775,7 +779,6 @@ Rules:
 - Suspense
 - Cliffhanger ending
 
-Return narration only.
 Return narration only.
 """
         )
