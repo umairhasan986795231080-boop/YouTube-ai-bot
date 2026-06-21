@@ -71,11 +71,35 @@ async def send_long_message(update, text):
 
 
 async def generate_edge_voice(text, output_file):
-    communicate = edge_tts.Communicate(
-        text=text,
-        voice="hi-IN-MadhurNeural"
-    )
-    await communicate.save(output_file)
+
+    voices = [
+        "hi-IN-SwaraNeural",
+        "hi-IN-MadhurNeural",
+        "en-US-AriaNeural"
+    ]
+
+    last_error = None
+
+    for voice in voices:
+
+        try:
+
+            communicate = edge_tts.Communicate(
+                text=text,
+                voice=voice
+            )
+
+            await communicate.save(output_file)
+
+            return output_file
+
+        except Exception as e:
+
+            print(f"Voice failed: {voice} -> {e}")
+
+            last_error = e
+
+    raise Exception(f"All voices failed: {last_error}")
 
 
 
@@ -779,7 +803,10 @@ async def generatemp4(update, context):
         script = ask_ai(f"Write a short Hindi narration about {topic}. Return narration only.")
         mp3_file = f"{topic}_video.mp3"
 
-        gTTS(text=script, lang="hi", slow=False).save(mp3_file)
+        await generate_edge_voice(
+    script,
+    mp3_file
+        )
 
         with open(mp3_file, "rb") as audio:
             await update.message.reply_audio(
