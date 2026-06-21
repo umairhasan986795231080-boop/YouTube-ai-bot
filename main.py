@@ -129,16 +129,17 @@ Rules:
 IMPORTANT:
 Do not exceed 110 words.
 
-Return narration only."""
+Return narration only.
+"""
+    
+def create_video(topic, mp3_file):
 
-    def create_video(topic, mp3_file):
-        
     images = sorted(
-    glob.glob(f"images/{topic}_*.jpg")
-)
+        glob.glob(f"images/{topic}_*.jpg")
+    )
 
-if not images:
-    raise Exception("No images found")
+    if not images:
+        raise Exception("No images found")
 
     list_file = f"{topic}_images.txt"
 
@@ -178,6 +179,7 @@ if not images:
         pass
 
     return output_video
+        
     
 # -------------------------
 # Start
