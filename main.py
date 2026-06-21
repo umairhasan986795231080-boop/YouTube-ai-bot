@@ -887,3 +887,21 @@ async def startup():
     if telegram_app.updater:
         await telegram_app.updater.start_polling(
             drop_pending_updates=Truw
+)
+
+    print("✅ Telegram Bot Started")
+
+# -------------------------
+# Shutdown
+# -------------------------
+
+@app.on_event("shutdown")
+async def shutdown():
+    global telegram_app
+
+    if telegram_app:
+        await telegram_app.stop()
+        await telegram_app.shutdown()
+
+    print("🛑 Telegram Bot Stopped")
+    
