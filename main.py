@@ -134,7 +134,7 @@ Return narration only.
     
 def create_video(topic, mp3_file):
 
-images = sorted(
+    images = sorted(
     glob.glob(f"images/{topic}_*.jpg")
 )
 
