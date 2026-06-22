@@ -134,7 +134,7 @@ Return narration only.
     
 def create_video(topic, mp3_file):
 
-    images = sorted(
+images = sorted(
     glob.glob(f"images/{topic}_*.jpg")
 )
 
@@ -156,13 +156,10 @@ output_video = f"{topic}.mp4"
 cmd = [
     "ffmpeg",
     "-y",
-
     "-f", "concat",
     "-safe", "0",
     "-i", list_file,
-
     "-i", mp3_file,
-
     "-vf",
     (
         "scale=720:1280,"
@@ -174,20 +171,14 @@ cmd = [
         "s=720x1280:"
         "fps=60"
     ),
-
     "-r", "60",
-
     "-c:v", "libx264",
     "-preset", "medium",
     "-crf", "23",
-
     "-c:a", "aac",
     "-b:a", "192k",
-
     "-pix_fmt", "yuv420p",
-
     "-shortest",
-
     output_video
 ]
 
