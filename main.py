@@ -165,15 +165,15 @@ def create_video(topic, mp3_file):
             "scale=720:1280,"
             "zoompan="
             "z='min(zoom+0.0008,1.25)':"
-            "d=180:"
+            "d=90:"
             "x='iw/2-(iw/zoom/2)':"
             "y='ih/2-(ih/zoom/2)':"
             "s=720x1280:"
-            "fps=60"
+            "fps=25"
         ),
-        "-r", "60",
+        "-r", "25",
         "-c:v", "libx264",
-        "-preset", "medium",
+        "-preset", "ultrafast",
         "-crf", "23",
         "-c:a", "aac",
         "-b:a", "192k",
