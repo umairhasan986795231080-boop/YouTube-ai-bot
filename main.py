@@ -134,51 +134,74 @@ Return narration only.
     
 def create_video(topic, mp3_file):
 
-    images = sorted(
-        glob.glob(f"images/{topic}_*.jpg")
-    )
+images = sorted(
+    glob.glob(f"images/{topic}_*.jpg")
+)
 
-    if not images:
-        raise Exception("No images found")
+if not images:
+    raise Exception("No images found")
 
-    list_file = f"{topic}_images.txt"
+list_file = f"{topic}_images.txt"
 
-    with open(list_file, "w") as f:
+with open(list_file, "w", encoding="utf-8") as f:
 
-        for image in images:
-            f.write(f"file '{os.path.abspath(image)}'\n")
-            f.write("duration 3\n")
+    for image in images:
+        f.write(f"file '{os.path.abspath(image)}'\n")
+        f.write("duration 6\n")
 
-        f.write(f"file '{os.path.abspath(images[-1])}'\n")
+    f.write(f"file '{os.path.abspath(images[-1])}'\n")
 
-    output_video = f"{topic}.mp4"
+output_video = f"{topic}.mp4"
 
-    cmd = [
-        "ffmpeg",
-        "-y",
-        "-f", "concat",
-        "-safe", "0",
-        "-i", list_file,
-        "-i", mp3_file,
-        "-vf",
-        "scale=720:1280,format=yuv420p",
-        "-shortest",
-        "-c:v", "libx264",
-        "-c:a", "aac",
-        output_video
-    ]
+cmd = [
+    "ffmpeg",
+    "-y",
 
-    subprocess.run(
-        cmd,
-        check=True
-    )
+    "-f", "concat",
+    "-safe", "0",
+    "-i", list_file,
 
-    try:
-        os.remove(list_file)
-    except:
-        pass
+    "-i", mp3_file,
 
-    return output_video
+    "-vf",
+    (
+        "scale=720:1280,"
+        "zoompan="
+        "z='min(zoom+0.0008,1.25)':"
+        "d=180:"
+        "x='iw/2-(iw/zoom/2)':"
+        "y='ih/2-(ih/zoom/2)':"
+        "s=720x1280:"
+        "fps=60"
+    ),
+
+    "-r", "60",
+
+    "-c:v", "libx264",
+    "-preset", "medium",
+    "-crf", "23",
+
+    "-c:a", "aac",
+    "-b:a", "192k",
+
+    "-pix_fmt", "yuv420p",
+
+    "-shortest",
+
+    output_video
+]
+
+subprocess.run(
+    cmd,
+    check=True
+)
+
+try:
+    os.remove(list_file)
+except:
+    pass
+
+return output_video
         
     
 # -------------------------
