@@ -526,7 +526,7 @@ async def imagebatch(update, context):
     await update.message.reply_text("🖼 Generating images...")
     os.makedirs("images", exist_ok=True)
 
-    for i in range(1, 6):
+    for i in range(1, 41):
         try:
             prompt = ask_ai(
                 f"Create cinematic image prompt #{i} for {topic}. Same character, ultra realistic, documentary style. Return only prompt."
@@ -892,7 +892,7 @@ async def generatemp4(update, context):
 
         os.makedirs("images", exist_ok=True)
 
-        for i in range(1, 6):
+        for i in range(1, 41):
             prompt = ask_ai(
                 f"Create cinematic documentary image #{i} for {topic}. Same character, ultra realistic, vertical 9:16. Return only prompt."
             )
